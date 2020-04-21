@@ -14,10 +14,6 @@ export class TaskRoutes {
     app.use(this.LoggerMiddleware);
     app.use(this.countRequest);
 
-    app.use('*', (req: Request, res: Response) => {
-      res.status(404).json({ error: 'Not found' });
-    });
-
     app.route('/api/tasks/').get(this.controller.getAllTasks);
     app
       .route('/api/tasks/:id')
@@ -33,6 +29,9 @@ export class TaskRoutes {
     app
       .route('/api/tasks/:taskId/:commentId')
       .delete(this.idChecker, this.controller.deleteCommentById);
+    app.use('*', (req: Request, res: Response) => {
+      res.status(404).json({ error: 'Not found' });
+    });
   }
   public idChecker(req: Request, res: Response, next: NextFunction) {
     if (

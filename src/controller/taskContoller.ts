@@ -49,11 +49,15 @@ class TaskController {
         description: 'required|string',
         hoursEstimated: 'required|integer',
         completed: 'required|in:true,false',
-        comments: 'required|array',
+        comments: 'array',
       });
+
       const matched = await v.check();
+      console.log('hi');
       if (!matched) throw new Error('400 creating task info validating failed');
+
       const obj: Array<Object> = req.body.comments;
+      if (!obj) throw new Error('400 creating task comment validating failed');
       for (var i = 0; i < obj.length; i++) {
         const eachCommentValidate: any = new Validator(obj[i], {
           name: 'required|string',
